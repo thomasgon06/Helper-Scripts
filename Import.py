@@ -2,7 +2,7 @@ import json
 from pymongo import MongoClient
 from datetime import datetime
 
-connection_string = "mongodb://localhost:27017/"
+connection_string = "mongodb://localhost:27017/" #replace with "mongodb://ip_of_database:27017" if database is not on local machine
 client = MongoClient(connection_string)
 current_db = client.SensorData
 collection = current_db.SensorInfo
@@ -10,7 +10,7 @@ meta = current_db.Metadata
 
 def insert():
     #Open Json File 
-    file_path = "/Users/tommy/desktop/Database_Script/data_files/data.json"
+    file_path = "json/file/location" #change
     with open(file_path, 'r') as file:
         #create list of dictionaries from the file 
         data = json.load(file)

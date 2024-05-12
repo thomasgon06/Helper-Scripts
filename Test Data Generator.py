@@ -1,17 +1,14 @@
 import os
 import datetime
-import pprint
 import random
-import pprint
 from pymongo import MongoClient
 
-printer = pprint.PrettyPrinter()
 
 #connect to database and verify connection
-connection_string = "mongodb://localhost:27017/"
+connection_string = "mongodb://localhost:27017/" #replace with "mongodb://ip_of_database:27017" if database is not on local machine
 client = MongoClient(connection_string)
 current_db = client.SensorData
-collection = current_db.SensorInfo
+collection = current_db.test
 meta = current_db.Metadata
 
 def create_index():
@@ -19,19 +16,52 @@ def create_index():
 
 
 def generate_data():
-    #day = datetime.datetime(2024, random.randint(1,12), random.randint(1,28))
+
+    x = int(input("what type of data would you like to generate: \n 1. Random Data \n 2. Completly Normal Data \n 3. Data With Abnormal ADC \n 4. Data With Abnormal Voltage \n 5. Data With Abnormal Temp \n :"))
+    y = int(input("How many records would you like to generate?"))
+
+    for i in range(y):
+
+        day = datetime.datetime(2024, random.randint(1,12), random.randint(1,28))
+        module = random.randint(1,50)
+        moring = random.randint(1,5)
+    
+        if (x == 1):
+            insert_test_doc(day, module, moring)
+        elif x == 2:
+            insert_good_doc(day, module, moring)
+        elif x == 3:
+            bad_adc(day, module, moring)
+        elif x == 4:
+            bad_voltage(day, module, moring)
+        elif x == 5:
+            bad_temp(day, module, moring)
+
+def generate_same_day_data():
+
+    day = datetime.datetime(2024, random.randint(1,12), random.randint(1,28))
     module = random.randint(1,50)
     moring = random.randint(1,5)
-    for i in range(1400):
-        day = datetime.datetime(2024, random.randint(1,12), random.randint(1,28))
-        insert_test_doc(day, module, moring)
-        #insert_good_doc(day, module, moring)
-        #bad_adc(day, module, moring)
-        #bad_voltage(day, module, moring)
-        #bad_temp(day, module, moring)
+
+  
+    x = int(input("what type of data would you like to generate: \n 1. Random Data \n 2. Completly Normal Data \n 3. Data With Abnormal ADC \n 4. Data With Abnormal Voltage \n 5. Data With Abnormal Temp \n :"))
+    y = int(input("How many records would you like to generate?"))
+
+    for i in range(y):
+
+        if (x == 1):
+            insert_test_doc(day, module, moring)
+        elif x == 2:
+            insert_good_doc(day, module, moring)
+        elif x == 3:
+            bad_adc(day, module, moring)
+        elif x == 4:
+            bad_voltage(day, module, moring)
+        elif x == 5:
+            bad_temp(day, module, moring)
 
 
-#Generate Sample Data
+#Generate Completly Random Test Data 
 def insert_test_doc(day, module, moring):
     specific_date = day.replace(hour=random.randint(1,23), minute = random.randint(1,59), second=random.randint(1,59), microsecond=random.randint(1,999999)) # Year, Month, Day, Hour, Minute, Second
     sample_document = {
@@ -46,6 +76,7 @@ def insert_test_doc(day, module, moring):
     collection.insert_one(sample_document)
     check_date(specific_date)
 
+#Generate Test Data That Is Not Misbehaving 
 def insert_good_doc(day, module, moring):
     specific_date = day.replace(hour=random.randint(1,23), minute = random.randint(1,59), second=random.randint(1,59), microsecond=random.randint(1,999999)) # Year, Month, Day, Hour, Minute, Second
     sample_document = {
@@ -61,6 +92,7 @@ def insert_good_doc(day, module, moring):
     check_date(specific_date)
 
 
+#Generate Test Document With Abnormal ADC
 def bad_adc(day, module, moring):
     specific_date = day.replace(hour=random.randint(1,23), minute = random.randint(1,59), second=random.randint(1,59), microsecond=random.randint(1,999999)) # Year, Month, Day, Hour, Minute, Second
     sample_document = {
@@ -75,6 +107,7 @@ def bad_adc(day, module, moring):
     collection.insert_one(sample_document)
     check_date(specific_date)
 
+#Generate Test Document With Abnormal Voltage
 def bad_voltage(day, module, moring):
     specific_date = day.replace(hour=random.randint(1,23), minute = random.randint(1,59), second=random.randint(1,59), microsecond=random.randint(1,999999)) # Year, Month, Day, Hour, Minute, Second
     sample_document = {
@@ -89,6 +122,7 @@ def bad_voltage(day, module, moring):
     collection.insert_one(sample_document)
     check_date(specific_date)
 
+#Generate Test Document With Abnormal Temp
 def bad_temp(day, module, moring):
     specific_date = day.replace(hour=random.randint(1,23), minute = random.randint(1,59), second=random.randint(1,59), microsecond=random.randint(1,999999)) # Year, Month, Day, Hour, Minute, Second
     sample_document = {
@@ -112,11 +146,18 @@ def check_date(newdate):
         filter = {"Most Recent": mostrecent}
         update = {'$set': {'Most Recent': newdate}}
         meta.update_one(filter,update)
+       
 
+def main():
+     create_index()
+     x = int(input("Enter 1 if you would like to generate data for one day, enter 2 if you would like to generate data for many random days: "))
+     if x == 1:
+         generate_same_day_data()
+     elif x == 2:
+         generate_data()
 
- 
-create_index()
-generate_data()
+if __name__ == "__main__":
+    main()
 
 
 

@@ -10,7 +10,7 @@ Ensure that your MongoDB instance is running. The default connection string assu
 connection_string = "mongodb://localhost:27017/"
 ```
 
-    If your MongoDB instance is running on a different machine, replace the connection string accordingly.
+If your MongoDB instance is running on a different machine, replace the connection string accordingly.
     
 ## External Tools Used
 

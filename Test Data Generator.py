@@ -69,7 +69,7 @@ def insert_test_doc(day, module, moring):
         "Moring Line #" : moring,
         "Module #" : module,
         "Photo Multiplier # " : random.randint(1,1000),
-        "Voltage" : random.randint(900,1500),
+        "Voltage" : random.uniform(900,1500),
         "Temperature" : random.randint(15,30),
         "ADC" : random.randint(1100,1300)
     }

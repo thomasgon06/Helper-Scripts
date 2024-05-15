@@ -5,10 +5,10 @@ This Python script is designed to generate test data for a MongoDB database, spe
 
 ## Setup
 
-    Ensure that your MongoDB instance is running. The default connection string assumes a local MongoDB instance:
-    ```python
-    connection_string = "mongodb://localhost:27017/"
-    ```
+Ensure that your MongoDB instance is running. The default connection string assumes a local MongoDB instance:
+```python
+connection_string = "mongodb://localhost:27017/"
+```
 
     If your MongoDB instance is running on a different machine, replace the connection string accordingly.
     
